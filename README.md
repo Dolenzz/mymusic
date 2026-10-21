@@ -4,7 +4,7 @@ A local first version of Tom’s music collection, using all 1,041 permanent IDs
 
 ## Open locally
 
-Double-click **Launch Music Library.cmd**, or run `npm start` and open http://127.0.0.1:4180. Keep the local server running while browsing. The server listens only on this PC. Publication has not been configured.
+Double-click **Launch Music Library.cmd**, or run `npm start` and open http://127.0.0.1:4180. Keep the local server running while browsing. The server listens only on this PC. Publication is configured through the GitHub Pages workflow; the local preview is independent of deployment.
 
 ## Included
 
@@ -20,7 +20,7 @@ Double-click **Launch Music Library.cmd**, or run `npm start` and open http://12
 
 The public catalog lives in `site/catalog.json`. Preparation explicitly selects public fields and excludes internal research notes and source-file paths. It never changes the master catalog. The UI preserves the provided content; it does not research or repair factual metadata.
 
-`scripts/prepare.py` reads the master JSON and original covers and generates WebP copies at up to 720px and 360px. Smaller originals are never enlarged or cropped. Transparent covers are flattened onto the site background. Original files stay untouched; conversion checks their hashes. Generated files have deterministic permanent-ID names. Covers are ignored by Git pending the hosting decision.
+`scripts/prepare.py` reads the master JSON and original covers and generates WebP copies at up to 720px and 360px. Smaller originals are never enlarged or cropped. Transparent covers are flattened onto the site background. Original files stay untouched; conversion checks their hashes. Generated files have deterministic permanent-ID names. Optimized covers are included in Git so GitHub Pages can serve the complete site. The R2 bucket is an independent backup.
 
 Run preparation with a Python installation containing Pillow:
 
@@ -43,5 +43,5 @@ Run `npm run check`. The full-catalog checks verify stable IDs, public-field fid
 - Tom’s visual review and adjustments.
 - Any further editorial changes Tom requests to the personal decade introductions.
 - Verify ambiguous album groups before final publication.
-- Choose website and cover hosting; configure deployment separately.
+- Publish the site and optimized covers together on GitHub Pages; verify the live deployment.
 - Continue to leave uncertain track-level songwriter mappings in the full-credit panel.
