@@ -1,0 +1,5 @@
+node_modules/
+__pycache__/
+reports/
+*.log
+.local.json

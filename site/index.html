@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#202221">
+  <meta name="description" content="Explore Tom’s personal music collection. Browse albums, artists, genres, and decades, read the liner notes, and find something to listen to.">
+  <title>Tom’s Music Library</title>
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="stylesheet" href="styles.css">
+  <script src="config.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#/home"><span>Tom’s</span> Music Library</a>
+      <button id="menu-toggle" class="icon-button mobile-menu" aria-label="Open navigation" aria-expanded="false" aria-controls="navigation">☰</button>
+      <nav id="navigation" aria-label="Main navigation">
+        <a href="#/home" data-nav="home">Home</a>
+        <a href="#/collection" data-nav="collection">Collection</a>
+        <a href="#/artists" data-nav="artists">Artists</a>
+        <a href="#/decades" data-nav="decades">Decades</a>
+        <a href="#/about" data-nav="about">About</a>
+      </nav>
+      <a href="#/collection?focus=search" class="header-search" aria-label="Search the collection"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="m15 15 6 6"/></svg></a>
+    </div>
+  </header>
+  <main id="main" tabindex="-1"><p class="loading">Opening the shelves…</p></main>
+  <footer class="site-footer"><a class="footer-brand" href="#/home">Tom’s Music Library</a><span>Collected over time. Rediscovered every day.</span><a href="#/collection">Explore the shelves ↗</a></footer>
+  <div id="announcement" class="sr-only" role="status" aria-live="polite"></div>
+  <noscript>Enable JavaScript to browse and search this collection.</noscript>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

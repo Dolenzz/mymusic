@@ -1,0 +1,10 @@
+{
+  "name": "toms-music-library",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "check": "node --check site/app.js && node --check site/catalog.mjs && node --test tests/*.test.mjs"
+  }
+}
