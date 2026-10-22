@@ -1,5 +1,5 @@
 import {DECADE_STORIES,CONTINUING_STORY,PLAYLISTS} from './stories.mjs';
-import {fold,artistKey,compare,indexAlbums,matches,sortAlbums,groupAlbums,browseAlbums,artistIndex,seededPicks,shelfEligible,parseTracks,trackWriters,spotifyUrl,coverPath} from './catalog.mjs';
+import {fold,artistKey,compare,indexAlbums,matches,sortAlbums,groupAlbums,browseAlbums,artistIndex,seededPicks,shelfEligible,parseTracks,trackWriters,spotifyUrl,spotifyAppUrl,coverPath} from './catalog.mjs';
 
 const $=(selector,root=document)=>root.querySelector(selector);
 const $$=(selector,root=document)=>[...root.querySelectorAll(selector)];
@@ -27,8 +27,15 @@ const albumLink=a=>pathFor('album',a.id);
 const tags=(values,cls='badge')=>values.map(v=>`<span class="${cls}">${esc(v)}</span>`).join('');
 function stream(a,large=false) {
   const url=spotifyUrl(a);
-  return url?`<a class="spotify ${large?'spotify-button':''}" href="${esc(url)}" target="_blank" rel="noopener noreferrer" aria-label="Listen to ${esc(a.album_title)} on Spotify (opens a new tab)">${icons.spotify}${large?'<span>Listen on Spotify ↗</span>':''}</a>`:'';
+  if (!url) return '';
+  const android=/Android/i.test(navigator.userAgent);
+  const href=android?spotifyAppUrl(a,navigator.userAgent):url;
+  const label=android?`Open ${a.album_title} in the Spotify app`:`Listen to ${a.album_title} on Spotify (opens a new tab)`;
+  const primary=`<a class="spotify ${large?'spotify-button':''}" href="${esc(href)}" ${android?'':'target="_blank" rel="noopener noreferrer"'} aria-label="${esc(label)}">${icons.spotify}${large?`<span>${android?'Open in Spotify app':'Listen on Spotify ↗'}</span>`:''}</a>`;
+  const browser=android&&large?`<a class="text-link spotify-browser-link" href="${esc(url)}" target="_blank" rel="noopener noreferrer">Listen in browser ↗</a>`:'';
+  return primary+browser;
 }
+
 function cover(a,{hero=false,full=false}={}) {
   const base=window.MUSIC_CONFIG?.coverBaseUrl || '';
   const src=coverPath(a.cover?.[full?'full':'thumb'],base);

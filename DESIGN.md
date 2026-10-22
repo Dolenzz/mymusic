@@ -26,4 +26,6 @@ Preserve original covers. Generate web copies automatically at the actual displa
 
 ## Before release
 
+Android Spotify album buttons use a user-tapped Chrome intent targeting com.spotify.music with the exact album URI and an exact-album HTTPS fallback. Album pages also provide a separate Listen in browser link. Desktop links keep their existing web behavior. Actual app handoff depends on the phone and must be confirmed on a physical Android device.
+
 The six personal decade introductions and closing passage were approved and implemented together, including the five playlist links, in `site/stories.mjs`. Writer surnames now appear beside tracks with exact, explicitly titled credit matches; ambiguous or conflicting credits remain accessible in the expandable full-credit section. Finish visual review, check grouping ambiguities, and choose hosting before configuring deployment. No ongoing manual curation should be necessary.

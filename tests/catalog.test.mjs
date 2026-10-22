@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile,stat,mkdir,writeFile} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
 import path from 'node:path';
-import {indexAlbums,artistKey,fold,yearOf,matches,sortAlbums,groupAlbums,browseAlbums,artistIndex,seededPicks,shelfEligible,parseTracks,trackWriters,spotifyUrl,coverPath} from '../site/catalog.mjs';
+import {indexAlbums,artistKey,fold,yearOf,matches,sortAlbums,groupAlbums,browseAlbums,artistIndex,seededPicks,shelfEligible,parseTracks,trackWriters,spotifyUrl,spotifyAppUrl,coverPath} from '../site/catalog.mjs';
 import {DECADE_STORIES,CONTINUING_STORY,PLAYLISTS} from '../site/stories.mjs';
 
 const root=fileURLToPath(new URL('../',import.meta.url));
@@ -102,6 +102,20 @@ test('multidisc headings and track sequence remain intact, including Journey',()
 test('only actual Spotify album URLs become listening buttons',()=>{
   for(const a of albums){const url=spotifyUrl(a);if(url)assert.match(url,/^https:\/\/open.spotify.com\/(?:intl-[a-z-]+\/)?album\/[a-zA-Z0-9]{22}/);}
   for(const url of ['javascript:alert(1)','https://open.spotify.com/search/anything','https://evil.com/album/abcdefghijklmnopqrstuv','https://open.spotify.com/album/guess'])assert.equal(spotifyUrl({spotify_url:url}),null);
+});
+
+test('Android app links preserve every verified album ID and its browser fallback',()=>{
+  for(const a of albums){
+    const web=spotifyUrl(a);
+    if (!web){assert.equal(spotifyAppUrl(a,'Android'),null);continue;}
+    const id=new URL(web).pathname.split('/').at(-1);
+    const intent=spotifyAppUrl(a,'Mozilla/5.0 (Linux; Android 14) Chrome');
+    assert.ok(intent.startsWith(`intent:album:${id}#Intent;`));
+    assert.ok(intent.includes('scheme=spotify;package=com.spotify.music;'));
+    assert.ok(intent.includes(`S.browser_fallback_url=${encodeURIComponent(web)};end`));
+    assert.equal(spotifyAppUrl(a,'iPhone'),`spotify:album:${id}`);
+  }
+  assert.equal(spotifyAppUrl({spotify_url:'https://open.spotify.com/search/Heart'},'Android'),null);
 });
 
 test('seeded selections are reproducible, varied, and have no duplicate albums or artists',()=>{

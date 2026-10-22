@@ -6,6 +6,18 @@ export function spotifyUrl(album) {
   const value=String(album.spotify_url || '').trim();
   return /^https:\/\/open\.spotify\.com\/(?:intl-[a-z-]+\/)?album\/[a-zA-Z0-9]{22}(?:[?#].*)?$/.test(value) ? value : null;
 }
+export function spotifyAppUrl(album,userAgent='') {
+  const web=spotifyUrl(album);
+  if (!web) return null;
+  const id=new URL(web).pathname.match(/\/album\/([a-zA-Z0-9]{22})$/)?.[1];
+  if (!id) return null;
+  const app=`spotify:album:${id}`;
+  // Chrome launches this from the user's tap, targets the installed Spotify app,
+  // and uses the exact album's web page if the app cannot handle the request.
+  return /Android/i.test(userAgent)
+    ? `intent:album:${id}#Intent;scheme=spotify;package=com.spotify.music;S.browser_fallback_url=${encodeURIComponent(web)};end`
+    : app;
+}
 export function indexAlbums(albums) {
   return albums.map(a => ({...a,_artistKey:artistKey(a.artist),_artistSort:artistKey(a.artist_sort || a.artist),_year:yearOf(a),_search:fold([a.artist,a.artist_original,...(a.artist_search_aliases || []),a.album_title,a.track_listing,...(a.genres || []),...(a.styles || [])].join(' '))}));
 }
