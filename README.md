@@ -45,3 +45,11 @@ Run `npm run check`. The full-catalog checks verify stable IDs, public-field fid
 - Verify ambiguous album groups before final publication.
 - Publish the site and optimized covers together on GitHub Pages; verify the live deployment.
 - Continue to leave uncertain track-level songwriter mappings in the full-credit panel.
+
+## Album sharing and rollback
+
+Album pages have a Share dialog with a locally generated PNG card, editable post text, clipboard actions, and the device sharing sheet where supported. Cards contain artwork, artist/title/year/format/genres, the existing anecdote, and tracks without songwriter credits. Long track lists use panels of at most 24 tracks; all tracks and disc/side labels are retained. Save each panel separately. Receiving apps may omit text or images, so Save image and Copy post text remain available. No social account, API key, screenshot service, or AI is used.
+
+`node scripts/build-share-pages.mjs` regenerates the 1,041 static album share URLs after catalog updates. These pages expose album-specific Open Graph cover metadata and direct visitors to the existing album route. Social apps control preview rendering; the downloadable detailed card is separate from the automatic cover preview.
+
+To hide the new sharing UI immediately, set `enableAlbumSharing: false` in `site/config.js` and deploy; this restores the original Copy album link action. The exact pre-feature version is tagged `before-album-sharing-2026-10-23`. Revert the album-sharing commit to undo the whole feature without deleting other work.
