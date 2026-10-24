@@ -8,7 +8,7 @@ Double-click **Launch Music Library.cmd**, or run `npm start` and open http://12
 
 ## Included
 
-- Home with a fresh, varied selection on every visit or refresh, a shuffle button, and three fixed banner albums chosen by Tom.
+- Home with a fresh random selection on every visit or refresh, without genre/decade quotas or repeated artists, a shuffle button, and three fixed banner albums chosen by Tom.
 - Collection grid in three sizes, sortable table, combined genre/style/format/decade filters, song/album/artist search, random selection, and incremental loading.
 - Artist index, natural display names with catalog surname sorting, and artist pages that combine matching albums across formats. Group by format restores each edition to its section.
 - Dedicated album links, full track sequences with disc/side headings where present, original credits, charts, anecdotes, edition details, and verified-format Spotify album links only.

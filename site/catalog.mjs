@@ -82,13 +82,10 @@ export function seededPicks(groups,seed,limit=8) {
   let state=[...String(seed)].reduce((s,c)=>Math.imul(s^c.charCodeAt(0),16777619),2166136261)>>>0;
   const random=()=>{state=(Math.imul(state,1664525)+1013904223)>>>0;return state/4294967296;};
   const shuffled=groups.map(a=>({a,r:random()})).sort((a,b)=>a.r-b.r).map(x=>x.a);
-  const picks=[],artists=new Set(),genres=new Set(),decades=new Set();
-  for (let pass=0;pass<3 && picks.length<limit;pass++) for (const a of shuffled) {
-    if (picks.includes(a) || artists.has(a._artistKey)) continue;
-    const genre=a.genres?.[0],decade=Math.floor(a._year/10)*10;
-    if (pass===0 && (genres.has(genre) || decades.has(decade))) continue;
-    if (pass===1 && genres.has(genre)) continue;
-    picks.push(a);artists.add(a._artistKey);genres.add(genre);decades.add(decade);
+  const picks=[],artists=new Set();
+  for (const a of shuffled) {
+    if (artists.has(a._artistKey)) continue;
+    picks.push(a);artists.add(a._artistKey);
     if (picks.length===limit) break;
   }
   return picks;

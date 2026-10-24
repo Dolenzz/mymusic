@@ -124,6 +124,8 @@ test('seeded selections are reproducible, varied, and have no duplicate albums o
   assert.equal(new Set(picks.map(a=>a._artistKey)).size,8);
   assert.ok(new Set(picks.flatMap(a=>a.genres)).size>=3);
   assert.notDeepEqual(picks.map(a=>a.id),seededPicks(groups,'2026-10-22',8).map(a=>a.id));
+  const recategorized=groups.map((a,i)=>({...a,genres:[`Category ${i}`],_year:1900+i*10}));
+  assert.deepEqual(picks.map(a=>a.id),seededPicks(recategorized,'2026-10-21',8).map(a=>a.id),'Genre and decade labels must not influence shelf selection');
 });
 
 test('cover host configuration supports later hosting without rewriting album records',()=>{
