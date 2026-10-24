@@ -53,3 +53,11 @@ Album pages have a Share dialog with a locally generated PNG card, editable post
 `node scripts/build-share-pages.mjs` regenerates the 1,041 static album share URLs after catalog updates. These pages expose album-specific Open Graph cover metadata and direct visitors to the existing album route. Social apps control preview rendering; the downloadable detailed card is separate from the automatic cover preview.
 
 To hide the new sharing UI immediately, set `enableAlbumSharing: false` in `site/config.js` and deploy; this restores the original Copy album link action. The exact pre-feature version is tagged `before-album-sharing-2026-10-23`. Revert the album-sharing commit to undo the whole feature without deleting other work.
+
+## Favorites, accessibility, and maintenance
+
+Hearts save albums to `toms-library-favorites` in browser localStorage. No account or server is involved. Matching formats share a favorite state using the existing conservative edition grouping; original IDs remain intact. Favorites only combines with the existing filters and URL, and updates across tabs. Storage failures are announced rather than claiming success. Clearing site data removes favorites. Grid/table, cover size, general sorting, artist sorting, and format grouping are remembered; searches and genre filters remain explicit in URLs instead of unexpectedly limiting a new visit.
+
+The public Collection No. is hidden. Keyboard focus is preserved when saving/removing albums and advancing Show more. Touch controls have larger hit areas, reduced-motion settings suppress decorative movement, and the search shortcut does not interfere with sharing dialogs. This is a focused accessibility review, not a formal WCAG certification or screen-reader audit.
+
+`npm run check` now checks every local cover and share-page link automatically. `node scripts/check-links.mjs --external` optionally checks Spotify URLs and writes `reports/link-check.json`. The GitHub Actions **Check collection links** workflow runs on demand, with an optional external check and downloadable report. A blocked request, timeout, login redirect, or rate limit is inconclusive, not a missing album; HTTP 404/410 results require review and never edit catalog data. No recurring job has been enabled.

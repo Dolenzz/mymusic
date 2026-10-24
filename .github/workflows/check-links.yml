@@ -1,0 +1,30 @@
+name: Check collection links
+on:
+  workflow_dispatch:
+    inputs:
+      external:
+        description: Also check Spotify URLs (may be blocked or rate limited)
+        type: boolean
+        default: false
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check all local artwork and share pages
+        run: node scripts/check-links.mjs
+      - name: Check external Spotify URLs
+        if: inputs.external
+        run: node scripts/check-links.mjs --external
+      - name: Save review report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: collection-link-report
+          path: reports/link-check.json
